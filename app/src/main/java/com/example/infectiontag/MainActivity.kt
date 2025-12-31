@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun startFlow(){
-        val intent = Intent(this, gameIndex::class.java)
+        val intent = Intent(this, GameIndex::class.java)
         startActivity(intent)
     }
 

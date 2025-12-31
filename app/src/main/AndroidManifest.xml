@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.InfectionTag" >
         <activity
-            android:name=".gameIndex"
+            android:name=".GameIndex"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gameIndex">
+    tools:context=".GameIndex">
 
     <Button
         android:id="@+id/createGameBtn"
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.401" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/startGameBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start Game"
@@ -31,7 +31,7 @@
         app:layout_constraintVertical_bias="0.499" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/endGameBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="End Game"
@@ -42,7 +42,7 @@
         app:layout_constraintVertical_bias="0.59" />
 
     <EditText
-        android:id="@+id/editTextText"
+        android:id="@+id/gameCodeTextBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -56,7 +56,7 @@
         app:layout_constraintVertical_bias="0.198" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/joinGameBtn"
         android:layout_width="194dp"
         android:layout_height="62dp"
         android:layout_marginTop="196dp"
@@ -67,7 +67,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/leaveGameBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Leave Game"
