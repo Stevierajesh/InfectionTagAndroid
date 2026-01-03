@@ -2,45 +2,46 @@ package com.example.infectiontag
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.EditText
+import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class GameIndex : AppCompatActivity() {
+class GameSettings : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_game_index)
+        setContentView(R.layout.activity_game_settings)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
+        val createGameButton = findViewById<Button>(R.id.createGameBtn)
 
-        var gameIDTextBox = findViewById< EditText>(R.id.gameCodeTextBox)
-        var joinGameButton = findViewById<Button>(R.id.joinGameBtn)
-        var createGameButton = findViewById<Button>(R.id.createGameBtn)
-
-
-
-        joinGameButton.setOnClickListener{
-            println("Pressed")
-
+        createGameButton.setOnClickListener {
+            createGame()
         }
 
-        gameIDTextBox.setOnClickListener{
-//            println("Pressed")
-        }
+    }
 
+    fun createGame(){
 
-        createGameButton.setOnClickListener{
-            val intent = Intent(this, GameSettings::class.java)
+        val game = GameController()
+
+        //game.createGame()
+
+        game.createGame{ gameId ->
+            val intent = Intent(this, Lobby::class.java)
+            intent.putExtra("GAME_ID", gameId)
+            intent.putExtra("ADMIN_STATUS", true)
+            Log.d("WS_IN", "GAME ID GIVEN TO USA:" + gameId)
+            game.updateGameCode(gameId)
+            game.updateAdminStatus(true)
             startActivity(intent)
         }
-
     }
 }
