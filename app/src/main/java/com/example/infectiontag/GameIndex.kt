@@ -27,14 +27,14 @@ class GameIndex : AppCompatActivity() {
 
 
 
+
         joinGameButton.setOnClickListener{
-            println("Pressed")
+            val gameCode = gameIDTextBox.text.toString()
+            if (gameCode.isEmpty()) return@setOnClickListener
+            joinGame(gameCode)
 
         }
 
-        gameIDTextBox.setOnClickListener{
-//            println("Pressed")
-        }
 
 
         createGameButton.setOnClickListener{
@@ -42,5 +42,13 @@ class GameIndex : AppCompatActivity() {
             startActivity(intent)
         }
 
+    }
+
+    fun joinGame(code : String) {
+        val game = GameController()
+        game.joinGame(code)
+        GameRepository.game = game
+        val intent = Intent(this, GameView::class.java)
+        startActivity(intent)
     }
 }

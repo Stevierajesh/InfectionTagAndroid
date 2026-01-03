@@ -36,11 +36,10 @@ class GameSettings : AppCompatActivity() {
 
         game.createGame{ gameId ->
             val intent = Intent(this, Lobby::class.java)
-            intent.putExtra("GAME_ID", gameId)
-            intent.putExtra("ADMIN_STATUS", true)
             Log.d("WS_IN", "GAME ID GIVEN TO USA:" + gameId)
             game.updateGameCode(gameId)
             game.updateAdminStatus(true)
+            GameRepository.game = game
             startActivity(intent)
         }
     }

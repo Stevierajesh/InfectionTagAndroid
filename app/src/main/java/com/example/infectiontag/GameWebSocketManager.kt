@@ -29,6 +29,8 @@ class GameWebSocketManager {
 
     private var onGameCreated: ((String) -> Unit)? = null
 
+
+
     fun startConnection(macAddress: String) {
         val client = OkHttpClient.Builder().build()
         val request = Request.Builder()
@@ -47,6 +49,8 @@ class GameWebSocketManager {
                 val data = gson.fromJson(text, GameCreatedMessage::class.java)
                 gameId = data.gameID
                 onGameCreated?.invoke(gameId!!)
+
+
 
                 for (listener in listeners) {
                     listener.onGameMessage(text)

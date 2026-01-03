@@ -1,6 +1,9 @@
 package com.example.infectiontag
 import android.util.Log
 import com.google.gson.Gson
+import android.os.Handler
+import android.os.Looper
+
 /*
 This is for controlling the game (client side only)
  */
@@ -10,13 +13,20 @@ class GameController : GameMessageListener {
     private val gson = Gson()
     private var onGameCreated: ((String) -> Unit)? = null
     var gameid :String?  = null;
-    val playerID = "ASjedkrh3809"
+    var playerID = "ASjedkrh3809"
     var socket: GameWebSocketManager? = null
 
-    init {
-        socket?.addListener(this)
+    private var onGameStarted: (() -> Unit)? = null
+
+    fun setOnGameStartedListener(listener: () -> Unit) {
+        onGameStarted = listener
     }
 
+    fun handleGameStarted() {
+        Handler(Looper.getMainLooper()).post {
+            onGameStarted?.invoke()
+        }
+    }
     var admin = false
 
     fun updateGameCode(gameID: String){
@@ -36,6 +46,12 @@ class GameController : GameMessageListener {
             gameid = data.gameID
             onGameCreated?.invoke(gameid!!)
         }
+
+        if (data.type == "GAME_STARTED") {
+            handleGameStarted()
+        }
+
+
     }
 
     //Game Session Functions
@@ -58,7 +74,7 @@ class GameController : GameMessageListener {
 
     }
 
-    fun joinGame(gameID: String?, macAddress: String){
+    fun joinGame(gameID: String?){
 
 
         if(socket == null){
@@ -81,7 +97,7 @@ class GameController : GameMessageListener {
             if(socket == null){
                 socket = GameWebSocketManager()
                 socket?.startConnection(playerID)
-                joinGame(gameid, playerID)
+                joinGame(gameid)
                 val json = gson.toJson(
                     mapOf(
                         "type" to "START_GAME",
@@ -109,7 +125,7 @@ class GameController : GameMessageListener {
             if(socket == null){
                 socket = GameWebSocketManager()
                 socket?.startConnection(playerID)
-                joinGame(gameid, playerID)
+                joinGame(gameid)
                 val json = gson.toJson(
                     mapOf(
                         "type" to "END_GAME",
@@ -135,11 +151,37 @@ class GameController : GameMessageListener {
     }
 
     fun leaveGame(){
+        if(socket == null){
+            socket = GameWebSocketManager()
+            socket?.startConnection(playerID)
+            joinGame(gameid)
+            val json = gson.toJson(
+                mapOf(
+                    "type" to "LEAVE_GAME",
+                    "playerID" to playerID,
+                )
+            )
+
+            socket?.send(json)
+        } else{
+            val json = gson.toJson(
+                mapOf(
+                    "type" to "LEAVE_GAME",
+                    "playerID" to playerID,
+                )
+            )
+
+            socket?.send(json)
+        }
+    }
+
+    //TODO-------------------
+    fun sendLocation(){
 
     }
 
-    //--------------------------
-    fun sendLocation(){
+    fun updatePlayerID(){
+
 
     }
 

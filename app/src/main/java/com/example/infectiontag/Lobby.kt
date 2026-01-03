@@ -1,6 +1,9 @@
 package com.example.infectiontag
-
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.view.View
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -17,8 +20,37 @@ class Lobby : AppCompatActivity() {
             insets
         }
 
+        val game = GameRepository.game
 
 
+        val startButton = findViewById<Button>(R.id.startGameButton)
+
+        if(game?.admin == true){
+            startButton.visibility= View.VISIBLE
+        } else {
+            startButton.visibility= View.GONE
+        }
+
+        startButton.setOnClickListener {
+            if(game == null){
+                Log.d("WS_IN", "CANNOT START GAME, GAME DOESN'T EXIST. REDIRECTING")
+                val intent = Intent(this, GameIndex::class.java)
+                startActivity(intent)
+            } else {
+                startGame()
+            }
+        }
 
     }
+
+    fun startGame(){
+        val game = GameRepository.game
+        game?.setOnGameStartedListener {
+            startActivity(Intent(this, GameView::class.java))
+        }
+
+        game?.startGame()
+
+    }
+
 }
