@@ -1,5 +1,6 @@
 package com.example.infectiontag
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.Button
@@ -23,39 +24,31 @@ class GameIndex : AppCompatActivity() {
         var gameIDTextBox = findViewById< EditText>(R.id.gameCodeTextBox)
         var joinGameButton = findViewById<Button>(R.id.joinGameBtn)
         var createGameButton = findViewById<Button>(R.id.createGameBtn)
-        var startGameButton = findViewById<Button>(R.id.startGameBtn)
-        var endGameButton = findViewById<Button>(R.id.endGameBtn)
-        var leaveGameButton = findViewById<Button>(R.id.leaveGameBtn)
 
 
 
-        gameIDTextBox.setOnClickListener{
-            println("Pressed")
-        }
 
         joinGameButton.setOnClickListener{
-            println("Pressed")
+            val gameCode = gameIDTextBox.text.toString()
+            if (gameCode.isEmpty()) return@setOnClickListener
+            joinGame(gameCode)
+
         }
+
+
 
         createGameButton.setOnClickListener{
-            println("Pressed")
+            val intent = Intent(this, GameSettings::class.java)
+            startActivity(intent)
         }
 
-        startGameButton.setOnClickListener{
-            println("Pressed")
-        }
+    }
 
-        endGameButton.setOnClickListener{
-            println("Pressed")
-        }
-
-        leaveGameButton.setOnClickListener{
-            println("Pressed")
-        }
-
-
-
-
-
+    fun joinGame(code : String) {
+        val game = GameController()
+        game.joinGame(code)
+        GameRepository.game = game
+        val intent = Intent(this, GameView::class.java)
+        startActivity(intent)
     }
 }
